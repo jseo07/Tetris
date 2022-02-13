@@ -18,9 +18,9 @@ import java.awt.*;
 import java.io.IOException;
 
 public class TerminalGame {
-    private Game game;
-    private Screen screen;
-    private WindowBasedTextGUI endGui;
+    protected Game game;
+    protected Screen screen;
+    protected WindowBasedTextGUI endGui;
 
     public void start(String difficulty) throws IOException, InterruptedException {
         screen = new DefaultTerminalFactory().createScreen();
@@ -59,7 +59,7 @@ public class TerminalGame {
         System.exit(0);
     }
 
-    private void tick() throws IOException {
+    public void tick() throws IOException {
         handleUserInput();
 
         game.tick();
@@ -77,7 +77,7 @@ public class TerminalGame {
 
     }
 
-    private void handleUserInput() throws IOException {
+    public void handleUserInput() throws IOException {
         KeyStroke stroke = screen.pollInput();
 
         if (stroke == null) {
@@ -92,7 +92,7 @@ public class TerminalGame {
         moveToDir(todo);
     }
 
-    private void moveToDir(String todo) {
+    public void moveToDir(String todo) {
         if (todo == null) {
             return;
         } else if (todo == "up") {
@@ -111,13 +111,13 @@ public class TerminalGame {
             }
         }
 
-            //while (!game.checkHorizontalCollision()) {
+        //while (!game.checkHorizontalCollision()) {
 
     }
 
 
 
-    private String getNextMove(KeyType type) {
+    public String getNextMove(KeyType type) {
         switch (type) {
             case ArrowUp:
                 return "up";
@@ -132,7 +132,7 @@ public class TerminalGame {
         }
     }
 
-    private void render() {
+    public void render() {
         if (game.isEnded()) {
             if (endGui == null) {
                 drawEndScreen();
@@ -145,7 +145,7 @@ public class TerminalGame {
         drawGame();
     }
 
-    private void drawWinScreen() {
+    public void drawWinScreen() {
         endGui = new MultiWindowTextGUI(screen);
 
         new MessageDialogBuilder()
@@ -156,7 +156,7 @@ public class TerminalGame {
                 .showDialog(endGui);
     }
 
-    private void drawEndScreen() {
+    public void drawEndScreen() {
         endGui = new MultiWindowTextGUI(screen);
 
         new MessageDialogBuilder()
@@ -167,7 +167,7 @@ public class TerminalGame {
                 .showDialog(endGui);
     }
 
-    private void drawScore() {
+    public void drawScore() {
         TextGraphics text = screen.newTextGraphics();
         text.setForegroundColor(TextColor.ANSI.GREEN);
         text.putString(1, 0, "Score: ");
@@ -178,7 +178,7 @@ public class TerminalGame {
 
     }
 
-    private void drawGame() {
+    public void drawGame() {
         int[] pos = new int[2];
         for (int y = game.padding; y < game.verticalSize - game.padding; y++) {
             for (int x = game.padding; x < game.horizontalSize - game.padding; x++) {
@@ -191,7 +191,7 @@ public class TerminalGame {
         }
     }
 
-    private TextColor colorToTextColor(Color color) {
+    public TextColor colorToTextColor(Color color) {
         if (color == Color.CYAN) {
             return TextColor.ANSI.CYAN;
         } else if (color == Color. GREEN) {
@@ -207,8 +207,7 @@ public class TerminalGame {
         }
     }
 
-
-    private void drawPosition(int[] pos, TextColor color, char c, boolean wide) {
+    public void drawPosition(int[] pos, TextColor color, char c, boolean wide) {
         TextGraphics text = screen.newTextGraphics();
         text.setForegroundColor(color);
         text.putString(pos[1] * 2, pos[0] + 1, String.valueOf(c));
